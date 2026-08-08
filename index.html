@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bayesian BWM Survey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-shape bg-shape-a"></div>
+  <div class="bg-shape bg-shape-b"></div>
+
+  <main class="container">
+    <header class="hero">
+      <p class="eyebrow">Expert Elicitation <span class="vi-inline">/ Thu thập ý kiến chuyên gia</span></p>
+      <h1>Bayesian BWM Survey</h1>
+      <p class="subtitle">Two-objective prioritization for SCPO and SESI with built-in consistency checks.</p>
+      <p class="subtitle vi-text">Xếp hạng ưu tiên hai mục tiêu SCPO và SESI kèm kiểm tra tính nhất quán tích hợp.</p>
+    </header>
+
+    <section class="card">
+      <h2>Expert Information <span class="heading-vi">Thông tin chuyên gia</span></h2>
+      <div class="grid-two">
+        <label>
+          <span class="field-label-vi">Mã chuyên gia</span>
+          Expert Code
+          <input id="expertCode" type="text" placeholder="EX001" maxlength="40" required>
+        </label>
+        <label>
+          <span class="field-label-vi">Mã mời tham gia</span>
+          Invite Token
+          <input id="inviteToken" type="text" placeholder="Paste your token / Dán mã của bạn" maxlength="120" required>
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Responder Information <span class="heading-vi">Thông tin người trả lời</span></h2>
+      <div class="grid-two">
+        <label>
+          <span class="field-label-vi">Độ tuổi</span>
+          Age Range
+          <select id="ageRange" required>
+            <option value="">Select... / Chọn...</option>
+            <option value="<25">Under 25 (Dưới 25)</option>
+            <option value="25-34">25 - 34</option>
+            <option value="35-44">35 - 44</option>
+            <option value="45-54">45 - 54</option>
+            <option value="55-64">55 - 64</option>
+            <option value="65+">65 or older (65 trở lên)</option>
+          </select>
+        </label>
+        <label>
+          <span class="field-label-vi">Giới tính</span>
+          Gender
+          <select id="gender" required>
+            <option value="">Select... / Chọn...</option>
+            <option value="male">Male (Nam)</option>
+            <option value="female">Female (Nữ)</option>
+            <option value="other">Other (Khác)</option>
+            <option value="prefer_not_say">Prefer not to say (Không muốn tiết lộ)</option>
+          </select>
+        </label>
+        <label>
+          <span class="field-label-vi">Trình độ học vấn cao nhất</span>
+          Highest Education Level
+          <select id="education" required>
+            <option value="">Select... / Chọn...</option>
+            <option value="bachelor">Bachelor's Degree (Cử nhân)</option>
+            <option value="master">Master's Degree (Thạc sĩ)</option>
+            <option value="phd">PhD / Doctorate (Tiến sĩ)</option>
+            <option value="other">Other (Khác)</option>
+          </select>
+        </label>
+        <label>
+          <span class="field-label-vi">Số năm kinh nghiệm chuyên môn</span>
+          Years of Professional Experience
+          <select id="yearsExperience" required>
+            <option value="">Select... / Chọn...</option>
+            <option value="<5">Less than 5 years (Dưới 5 năm)</option>
+            <option value="5-10">5 - 10 years</option>
+            <option value="11-15">11 - 15 years</option>
+            <option value="16-20">16 - 20 years</option>
+            <option value="20+">More than 20 years (Trên 20 năm)</option>
+          </select>
+        </label>
+        <label>
+          <span class="field-label-vi">Chức danh / Vai trò</span>
+          Job Title / Role
+          <input id="jobTitle" type="text" placeholder="e.g., Supply Chain Manager" maxlength="120" required>
+        </label>
+        <label>
+          <span class="field-label-vi">Tổ chức</span>
+          Organization
+          <input id="organization" type="text" placeholder="Company / Institution name" maxlength="120" required>
+        </label>
+        <label>
+          <span class="field-label-vi">Ngành công nghiệp</span>
+          Industry Sector
+          <input id="industrySector" type="text" placeholder="e.g., Manufacturing, Retail" maxlength="120" required>
+        </label>
+        <label>
+          <span class="field-label-vi">Quốc gia / Khu vực</span>
+          Country / Region
+          <input id="country" type="text" placeholder="e.g., Vietnam" maxlength="120" required>
+        </label>
+      </div>
+    </section>
+
+    <section class="card objective-frame">
+      <div class="objective-header">
+        <div>
+          <p class="eyebrow">Objective 1 <span class="vi-inline">/ Mục tiêu 1</span></p>
+          <h2>SCPO - Supply Chain Practices and Outcomes <span class="heading-vi">Thực hành và Kết quả Chuỗi cung ứng</span></h2>
+        </div>
+        <span class="objective-badge">Best / Worst / Scoring <span class="vi-inline">Tốt nhất / Kém nhất / Chấm điểm</span></span>
+      </div>
+
+      <p class="hint">Pick one Best and one Worst criterion using the radio buttons in the table below. The two selections must be different.<br><span class="vi-inline">Chọn một tiêu chí Tốt nhất và một tiêu chí Kém nhất bằng các nút radio trong bảng bên dưới. Hai lựa chọn phải khác nhau.</span></p>
+
+      <h3>Scoring Table <span class="heading-vi">Bảng chấm điểm</span></h3>
+      <p class="hint">Use the 1-9 scale. 1 means equal priority, 9 means absolutely more important for the current objective.<br><span class="vi-inline">Sử dụng thang điểm 1-9. 1 nghĩa là mức độ ưu tiên bằng nhau, 9 nghĩa là quan trọng hơn hẳn đối với mục tiêu hiện tại.</span></p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Code <span class="heading-vi">Mã</span></th>
+              <th>Criterion <span class="heading-vi">Tiêu chí</span></th>
+              <th>Best <span class="heading-vi">Tốt nhất</span></th>
+              <th>Worst <span class="heading-vi">Kém nhất</span></th>
+              <th>Best vs Criterion <span class="heading-vi">Tốt nhất so với Tiêu chí</span></th>
+              <th>Criterion vs Worst <span class="heading-vi">Tiêu chí so với Kém nhất</span></th>
+            </tr>
+          </thead>
+          <tbody id="criteriaBody"></tbody>
+        </table>
+      </div>
+
+      <div class="rule-box">
+        <p>Best vs Best must be 1. Worst vs Worst must be 1.<br><span class="vi-inline">Tốt nhất so với Tốt nhất phải bằng 1. Kém nhất so với Kém nhất phải bằng 1.</span></p>
+      </div>
+    </section>
+
+    <section class="card objective-frame">
+      <div class="objective-header">
+        <div>
+          <p class="eyebrow">Objective 2 <span class="vi-inline">/ Mục tiêu 2</span></p>
+          <h2>SESI - Social-Economic-Sustainability Impact <span class="heading-vi">Tác động Kinh tế - Xã hội - Bền vững</span></h2>
+        </div>
+        <span class="objective-badge">Best / Worst / Scoring <span class="vi-inline">Tốt nhất / Kém nhất / Chấm điểm</span></span>
+      </div>
+
+      <p class="hint">Pick one Best and one Worst criterion using the radio buttons in the table below. The two selections must be different.<br><span class="vi-inline">Chọn một tiêu chí Tốt nhất và một tiêu chí Kém nhất bằng các nút radio trong bảng bên dưới. Hai lựa chọn phải khác nhau.</span></p>
+
+      <h3>Scoring Table <span class="heading-vi">Bảng chấm điểm</span></h3>
+      <p class="hint">Use the 1-9 scale. 1 means equal priority, 9 means absolutely more important for the current objective.<br><span class="vi-inline">Sử dụng thang điểm 1-9. 1 nghĩa là mức độ ưu tiên bằng nhau, 9 nghĩa là quan trọng hơn hẳn đối với mục tiêu hiện tại.</span></p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Code <span class="heading-vi">Mã</span></th>
+              <th>Criterion <span class="heading-vi">Tiêu chí</span></th>
+              <th>Best <span class="heading-vi">Tốt nhất</span></th>
+              <th>Worst <span class="heading-vi">Kém nhất</span></th>
+              <th>Best vs Criterion <span class="heading-vi">Tốt nhất so với Tiêu chí</span></th>
+              <th>Criterion vs Worst <span class="heading-vi">Tiêu chí so với Kém nhất</span></th>
+            </tr>
+          </thead>
+          <tbody id="criteriaBody2"></tbody>
+        </table>
+      </div>
+
+      <div class="rule-box">
+        <p>Best vs Best must be 1. Worst vs Worst must be 1.<br><span class="vi-inline">Tốt nhất so với Tốt nhất phải bằng 1. Kém nhất so với Kém nhất phải bằng 1.</span></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <div id="message" class="message" aria-live="polite"></div>
+      <div class="actions">
+        <button id="validateBtn" type="button" class="secondary">Validate (Kiểm tra)</button>
+        <button id="submitBtn" type="button" class="primary">Submit Response (Gửi phản hồi)</button>
+      </div>
+      <p class="hint">If the Google Apps Script URL is not configured, the app will download a JSON file so you can still pilot test.<br><span class="vi-inline">Nếu chưa cấu hình URL Google Apps Script, ứng dụng sẽ tải xuống tệp JSON để bạn có thể thử nghiệm.</span></p>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
