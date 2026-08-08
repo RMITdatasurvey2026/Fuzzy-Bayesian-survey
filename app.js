@@ -52,10 +52,7 @@ const el = {
   industrySector: document.getElementById("industrySector"),
   validateBtn: document.getElementById("validateBtn"),
   submitBtn: document.getElementById("submitBtn"),
-  message: document.getElementById("message"),
-  submitPopup: document.getElementById("submitPopup"),
-  popupText: document.getElementById("popupText"),
-  closePopupBtn: document.getElementById("closePopupBtn")
+  message: document.getElementById("message")
 };
 
 const appScriptUrl =
@@ -63,20 +60,26 @@ const appScriptUrl =
     ? window.SURVEY_CONFIG.appScriptUrl.trim()
     : "";
 
+const nextSurveyUrl =
+  window.SURVEY_CONFIG && window.SURVEY_CONFIG.nextSurveyUrl
+    ? window.SURVEY_CONFIG.nextSurveyUrl.trim()
+    : window.location.href;
+
+const successPageUrl =
+  window.SURVEY_CONFIG && window.SURVEY_CONFIG.successPageUrl
+    ? window.SURVEY_CONFIG.successPageUrl.trim()
+    : "submitted.html";
+
 function setMessage(text, type = "") {
   el.message.className = `message ${type}`.trim();
   el.message.textContent = text;
 }
 
-function showSubmitPopup(message) {
-  el.popupText.textContent = message;
-  el.submitPopup.classList.add("is-open");
-  el.submitPopup.setAttribute("aria-hidden", "false");
-}
-
-function hideSubmitPopup() {
-  el.submitPopup.classList.remove("is-open");
-  el.submitPopup.setAttribute("aria-hidden", "true");
+function goToSuccessPage(status) {
+  const url = new URL(successPageUrl, window.location.href);
+  url.searchParams.set("next", nextSurveyUrl);
+  url.searchParams.set("status", status);
+  window.location.assign(url.toString());
 }
 
 function buildTable(objective) {
@@ -277,7 +280,7 @@ async function submitResponse() {
   if (!appScriptUrl) {
     downloadFallback(payload);
     setMessage("Backend not configured. JSON backup file downloaded. / Chưa cấu hình máy chủ. Đã tải xuống tệp JSON sao lưu.", "success");
-    showSubmitPopup("Backup JSON downloaded successfully. / Đã tải xuống tệp JSON sao lưu thành công.");
+    goToSuccessPage("backup");
     return;
   }
 
@@ -305,7 +308,7 @@ async function submitResponse() {
     }
 
     setMessage("Submitted. Thank you for your response. / Đã gửi. Cảm ơn bạn đã phản hồi.", "success");
-    showSubmitPopup("Your response has been received and recorded. / Phản hồi của bạn đã được ghi nhận thành công.");
+    goToSuccessPage("submitted");
   } catch (error) {
     setMessage(error.message || "Submit failed. Check your connection and try again. / Gửi thất bại. Vui lòng kiểm tra kết nối và thử lại.", "error");
   } finally {
@@ -332,17 +335,5 @@ el.validateBtn.addEventListener("click", () => {
   setMessage("Validation passed. Ready to submit. / Đã kiểm tra hợp lệ. Sẵn sàng gửi.", "success");
 });
 el.submitBtn.addEventListener("click", submitResponse);
-
-el.closePopupBtn.addEventListener("click", hideSubmitPopup);
-el.submitPopup.addEventListener("click", (event) => {
-  if (event.target.hasAttribute("data-popup-close")) {
-    hideSubmitPopup();
-  }
-});
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    hideSubmitPopup();
-  }
-});
 
 setMessage("Ready. Fill in your information and scores, then click Validate. / Sẵn sàng. Điền thông tin và điểm số, sau đó nhấn Kiểm tra."); 
