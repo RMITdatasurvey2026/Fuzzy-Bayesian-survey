@@ -295,6 +295,87 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.submit-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.submit-popup.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.submit-popup__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(17, 27, 35, 0.45);
+  backdrop-filter: blur(3px);
+}
+
+.submit-popup__card {
+  position: relative;
+  width: min(520px, 90vw);
+  border-radius: 22px;
+  padding: 28px 24px 24px;
+  background: linear-gradient(155deg, #fff8e7 0%, #edf9f7 48%, #fffdf8 100%);
+  border: 1px solid #d9d2c4;
+  box-shadow: 0 20px 60px rgba(16, 28, 36, 0.28);
+  animation: popup-rise 280ms ease-out;
+  overflow: hidden;
+  text-align: center;
+}
+
+.submit-popup__flare {
+  position: absolute;
+  inset: -50% 25% auto;
+  height: 180px;
+  background: radial-gradient(circle, rgba(245, 184, 65, 0.35) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.submit-popup__eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.76rem;
+  color: #b35f2f;
+  font-weight: 700;
+}
+
+.submit-popup h3 {
+  margin: 10px 0 8px;
+  font-size: clamp(1.4rem, 3.2vw, 1.9rem);
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.submit-popup p {
+  margin: 0;
+  color: #3d4d56;
+}
+
+.submit-popup__btn {
+  margin-top: 18px;
+  min-width: 150px;
+  box-shadow: 0 8px 18px rgba(12, 124, 111, 0.32);
+}
+
+@keyframes popup-rise {
+  from {
+    transform: translateY(18px) scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
 @media (max-width: 780px) {
   .grid-two {
     grid-template-columns: 1fr;
@@ -302,5 +383,9 @@ button:disabled {
 
   .card {
     padding: 16px;
+  }
+
+  .submit-popup__card {
+    padding: 24px 18px 20px;
   }
 }

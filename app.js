@@ -43,7 +43,6 @@ const OBJECTIVES = [
 
 const el = {
   expertCode: document.getElementById("expertCode"),
-  inviteToken: document.getElementById("inviteToken"),
   ageRange: document.getElementById("ageRange"),
   gender: document.getElementById("gender"),
   education: document.getElementById("education"),
@@ -51,10 +50,12 @@ const el = {
   jobTitle: document.getElementById("jobTitle"),
   organization: document.getElementById("organization"),
   industrySector: document.getElementById("industrySector"),
-  country: document.getElementById("country"),
   validateBtn: document.getElementById("validateBtn"),
   submitBtn: document.getElementById("submitBtn"),
-  message: document.getElementById("message")
+  message: document.getElementById("message"),
+  submitPopup: document.getElementById("submitPopup"),
+  popupText: document.getElementById("popupText"),
+  closePopupBtn: document.getElementById("closePopupBtn")
 };
 
 const appScriptUrl =
@@ -65,6 +66,17 @@ const appScriptUrl =
 function setMessage(text, type = "") {
   el.message.className = `message ${type}`.trim();
   el.message.textContent = text;
+}
+
+function showSubmitPopup(message) {
+  el.popupText.textContent = message;
+  el.submitPopup.classList.add("is-open");
+  el.submitPopup.setAttribute("aria-hidden", "false");
+}
+
+function hideSubmitPopup() {
+  el.submitPopup.classList.remove("is-open");
+  el.submitPopup.setAttribute("aria-hidden", "true");
 }
 
 function buildTable(objective) {
@@ -188,7 +200,6 @@ function validateObjective(objective, issues) {
 
 function validateAll() {
   const expertCode = el.expertCode.value.trim();
-  const inviteToken = el.inviteToken.value.trim();
   const demographics = {
     ageRange: el.ageRange.value,
     gender: el.gender.value,
@@ -196,8 +207,7 @@ function validateAll() {
     yearsExperience: el.yearsExperience.value,
     jobTitle: el.jobTitle.value.trim(),
     organization: el.organization.value.trim(),
-    industrySector: el.industrySector.value.trim(),
-    country: el.country.value.trim()
+    industrySector: el.industrySector.value.trim()
   };
 
   const issues = [];
@@ -205,18 +215,13 @@ function validateAll() {
   if (!expertCode) {
     issues.push("Expert code is required. / Mã chuyên gia là bắt buộc.");
   }
-  if (!inviteToken) {
-    issues.push("Invite token is required. / Mã mời tham gia là bắt buộc.");
-  }
 
   if (!demographics.ageRange) issues.push("Age range is required. / Độ tuổi là bắt buộc.");
   if (!demographics.gender) issues.push("Gender is required. / Giới tính là bắt buộc.");
   if (!demographics.education) issues.push("Highest education level is required. / Trình độ học vấn cao nhất là bắt buộc.");
   if (!demographics.yearsExperience) issues.push("Years of professional experience is required. / Số năm kinh nghiệm chuyên môn là bắt buộc.");
   if (!demographics.jobTitle) issues.push("Job title / role is required. / Chức danh / vai trò là bắt buộc.");
-  if (!demographics.organization) issues.push("Organization is required. / Tổ chức là bắt buộc.");
   if (!demographics.industrySector) issues.push("Industry sector is required. / Ngành công nghiệp là bắt buộc.");
-  if (!demographics.country) issues.push("Country / Region is required. / Quốc gia / khu vực là bắt buộc.");
 
   const results = {};
   for (const objective of OBJECTIVES) {
@@ -238,7 +243,6 @@ function validateAll() {
     issues: [],
     payload: {
       expertCode,
-      inviteToken,
       demographics,
       scpo: results.scpo,
       sesi: results.sesi,
@@ -273,6 +277,7 @@ async function submitResponse() {
   if (!appScriptUrl) {
     downloadFallback(payload);
     setMessage("Backend not configured. JSON backup file downloaded. / Chưa cấu hình máy chủ. Đã tải xuống tệp JSON sao lưu.", "success");
+    showSubmitPopup("Backup JSON downloaded successfully. / Đã tải xuống tệp JSON sao lưu thành công.");
     return;
   }
 
@@ -300,6 +305,7 @@ async function submitResponse() {
     }
 
     setMessage("Submitted. Thank you for your response. / Đã gửi. Cảm ơn bạn đã phản hồi.", "success");
+    showSubmitPopup("Your response has been received and recorded. / Phản hồi của bạn đã được ghi nhận thành công.");
   } catch (error) {
     setMessage(error.message || "Submit failed. Check your connection and try again. / Gửi thất bại. Vui lòng kiểm tra kết nối và thử lại.", "error");
   } finally {
@@ -326,5 +332,17 @@ el.validateBtn.addEventListener("click", () => {
   setMessage("Validation passed. Ready to submit. / Đã kiểm tra hợp lệ. Sẵn sàng gửi.", "success");
 });
 el.submitBtn.addEventListener("click", submitResponse);
+
+el.closePopupBtn.addEventListener("click", hideSubmitPopup);
+el.submitPopup.addEventListener("click", (event) => {
+  if (event.target.hasAttribute("data-popup-close")) {
+    hideSubmitPopup();
+  }
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    hideSubmitPopup();
+  }
+});
 
 setMessage("Ready. Fill in your information and scores, then click Validate. / Sẵn sàng. Điền thông tin và điểm số, sau đó nhấn Kiểm tra."); 

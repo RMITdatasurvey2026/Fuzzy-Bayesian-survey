@@ -22,24 +22,13 @@
     </header>
 
     <section class="card">
-      <h2>Expert Information <span class="heading-vi">Thông tin chuyên gia</span></h2>
+      <h2>Response Information <span class="heading-vi">Thông tin phản hồi</span></h2>
       <div class="grid-two">
         <label>
           <span class="field-label-vi">Mã chuyên gia</span>
           Expert Code
           <input id="expertCode" type="text" placeholder="EX001" maxlength="40" required>
         </label>
-        <label>
-          <span class="field-label-vi">Mã mời tham gia</span>
-          Invite Token
-          <input id="inviteToken" type="text" placeholder="Paste your token / Dán mã của bạn" maxlength="120" required>
-        </label>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Responder Information <span class="heading-vi">Thông tin người trả lời</span></h2>
-      <div class="grid-two">
         <label>
           <span class="field-label-vi">Độ tuổi</span>
           Age Range
@@ -93,19 +82,14 @@
           <input id="jobTitle" type="text" placeholder="e.g., Supply Chain Manager" maxlength="120" required>
         </label>
         <label>
-          <span class="field-label-vi">Tổ chức</span>
-          Organization
-          <input id="organization" type="text" placeholder="Company / Institution name" maxlength="120" required>
+          <span class="field-label-vi">Tổ chức (không bắt buộc)</span>
+          Organization (Optional)
+          <input id="organization" type="text" placeholder="Company / Institution name" maxlength="120">
         </label>
         <label>
           <span class="field-label-vi">Ngành công nghiệp</span>
           Industry Sector
           <input id="industrySector" type="text" placeholder="e.g., Manufacturing, Retail" maxlength="120" required>
-        </label>
-        <label>
-          <span class="field-label-vi">Quốc gia / Khu vực</span>
-          Country / Region
-          <input id="country" type="text" placeholder="e.g., Vietnam" maxlength="120" required>
         </label>
       </div>
     </section>
@@ -187,6 +171,17 @@
       <p class="hint">If the Google Apps Script URL is not configured, the app will download a JSON file so you can still pilot test.<br><span class="vi-inline">Nếu chưa cấu hình URL Google Apps Script, ứng dụng sẽ tải xuống tệp JSON để bạn có thể thử nghiệm.</span></p>
     </section>
   </main>
+
+  <div id="submitPopup" class="submit-popup" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="popupTitle">
+    <div class="submit-popup__backdrop" data-popup-close></div>
+    <div class="submit-popup__card">
+      <div class="submit-popup__flare"></div>
+      <p class="submit-popup__eyebrow">Submission Complete</p>
+      <h3 id="popupTitle">Response Sent Successfully</h3>
+      <p id="popupText">Your response has been securely recorded.</p>
+      <button id="closePopupBtn" type="button" class="primary submit-popup__btn">Awesome</button>
+    </div>
+  </div>
 
   <script src="config.js"></script>
   <script src="app.js"></script>
