@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Response Submitted</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #17232c;
+      --muted: #5c6d78;
+      --panel: #fffdf7;
+      --line: #dfd8c8;
+      --accent: #0b7a70;
+      --accent-2: #cc6e2f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "IBM Plex Sans", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 15%, #ffe9b8 0%, transparent 34%),
+        radial-gradient(circle at 86% 11%, #d6f0ea 0%, transparent 32%),
+        linear-gradient(145deg, #f5efe3 0%, #f6f3ea 55%, #eef6f4 100%);
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .done-card {
+      width: min(760px, 94vw);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: 0 24px 60px rgba(20, 29, 36, 0.2);
+      padding: clamp(22px, 4vw, 38px);
+      position: relative;
+      overflow: hidden;
+      animation: card-rise 420ms ease;
+    }
+
+    .done-card::before,
+    .done-card::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .done-card::before {
+      width: 280px;
+      height: 280px;
+      top: -160px;
+      right: -110px;
+      background: radial-gradient(circle, rgba(43, 156, 143, 0.22) 0%, transparent 72%);
+    }
+
+    .done-card::after {
+      width: 260px;
+      height: 260px;
+      bottom: -160px;
+      left: -120px;
+      background: radial-gradient(circle, rgba(235, 143, 84, 0.2) 0%, transparent 72%);
+    }
+
+    .eyebrow {
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-weight: 700;
+      color: var(--accent-2);
+      font-size: 0.78rem;
+    }
+
+    h1 {
+      margin: 10px 0 8px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.8rem, 4.8vw, 2.6rem);
+      line-height: 1.15;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      max-width: 620px;
+      font-size: 1.03rem;
+      line-height: 1.5;
+    }
+
+    .status-line {
+      margin: 18px 0 0;
+      font-weight: 600;
+      color: #21414f;
+    }
+
+    .actions {
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button,
+    a.button-link {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 0.96rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 170px;
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--accent), #1b5d7a);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(12, 122, 112, 0.33);
+    }
+
+    .ghost {
+      background: #ece6d9;
+      color: #22313a;
+    }
+
+    .countdown {
+      margin-top: 14px;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+
+    @keyframes card-rise {
+      from {
+        transform: translateY(12px) scale(0.98);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .actions {
+        flex-direction: column;
+      }
+
+      button,
+      a.button-link {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="done-card">
+    <p class="eyebrow">Submission Complete</p>
+    <h1 id="titleText">Thank you for your response</h1>
+    <p class="subtitle" id="subtitleText">Your answers were successfully submitted.</p>
+    <p class="status-line" id="statusText">You can continue with the next survey now.</p>
+
+    <div class="actions">
+      <a id="nextSurveyLink" class="button-link primary" href="#">Start Another Survey</a>
+      <button id="closePageBtn" type="button" class="ghost">Close This Tab</button>
+    </div>
+
+    <p class="countdown">Auto-redirecting in <span id="countdown">6</span>s...</p>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const nextUrl = params.get("next") || "index.html";
+    const status = params.get("status") || "submitted";
+
+    const titleText = document.getElementById("titleText");
+    const subtitleText = document.getElementById("subtitleText");
+    const statusText = document.getElementById("statusText");
+    const nextSurveyLink = document.getElementById("nextSurveyLink");
+    const closePageBtn = document.getElementById("closePageBtn");
+    const countdownEl = document.getElementById("countdown");
+
+    nextSurveyLink.href = nextUrl;
+
+    if (status === "backup") {
+      titleText.textContent = "Backup file created successfully";
+      subtitleText.textContent = "Your JSON backup was downloaded because the backend is not configured.";
+      statusText.textContent = "You can still continue to the next survey.";
+    }
+
+    let seconds = 6;
+    const timer = setInterval(() => {
+      seconds -= 1;
+      countdownEl.textContent = String(seconds);
+      if (seconds <= 0) {
+        clearInterval(timer);
+        window.location.assign(nextUrl);
+      }
+    }, 1000);
+
+    closePageBtn.addEventListener("click", () => {
+      window.close();
+      setTimeout(() => {
+        window.location.assign(nextUrl);
+      }, 200);
+    });
+  </script>
+</body>
+</html>
